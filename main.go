@@ -7,25 +7,25 @@ import (
 
 	f "./utils/functions"
 
-	// "./problems/day01"
-	// "./problems/day02"
-	// "./problems/day03"
-	// "./problems/day04"
-	// "./problems/day05"
-	// "./problems/day06"
-	// "./problems/day07"
-	// "./problems/day08"
-	// "./problems/day09"
-	// "./problems/day10"
-	// "./problems/day11"
-	// "./problems/day12"
-	// "./problems/day13"
-	// "./problems/day14"
-	// "./problems/day15"
+	"./problems/day01"
+	"./problems/day02"
+	"./problems/day03"
+	"./problems/day04"
+	"./problems/day05"
+	"./problems/day06"
+	"./problems/day07"
+	"./problems/day08"
+	"./problems/day09"
+	"./problems/day10"
+	"./problems/day11"
+	"./problems/day12"
+	"./problems/day13"
+	"./problems/day14"
+	"./problems/day15"
 	"./problems/day16"
 	"./problems/day17"
-	// "./problems/day18"
-	// "./problems/day19"
+	"./problems/day18"
+	"./problems/day19"
 	// "./problems/day20"
 	// "./problems/day21"
 	// "./problems/day22"
@@ -57,65 +57,65 @@ func main() {
 	path := "problems/day" + day + "/inputs/" + inputFile
 	input := f.ReadFile(path)
 
-	// if day == "01" {
-	// 	day01.Run(input)
-	// }
-	//
-	// if day == "02" {
-	// 	day02.Run(input)
-	// }
-	//
-	// if day == "03" {
-	// 	day03.Run(input)
-	// }
-	//
-	// if day == "04" {
-	// 	day04.Run(input)
-	// }
-	//
-	// if day == "05" {
-	// 	day05.Run(input)
-	// }
-	//
-	// if day == "06" {
-	// 	day06.Run(input)
-	// }
-	//
-	// if day == "07" {
-	// 	day07.Run(input)
-	// }
-	//
-	// if day == "08" {
-	// 	day08.Run(input)
-	// }
-	//
-	// if day == "09" {
-	// 	day09.Run(input)
-	// }
-	//
-	// if day == "10" {
-	// 	day10.Run(input)
-	// }
-	//
-	// if day == "11" {
-	// 	day11.Run(input)
-	// }
-	//
-	// if day == "12" {
-	// 	day12.Run(input)
-	// }
-	//
-	// if day == "13" {
-	// 	day13.Run(input)
-	// }
-	//
-	// if day == "14" {
-	// 	day14.Run(input)
-	// }
-	//
-	// if day == "15" {
-	// 	day15.Run(input)
-	// }
+	if day == "01" {
+		day01.Run(input)
+	}
+
+	if day == "02" {
+		day02.Run(input)
+	}
+
+	if day == "03" {
+		day03.Run(input)
+	}
+
+	if day == "04" {
+		day04.Run(input)
+	}
+
+	if day == "05" {
+		day05.Run(input)
+	}
+
+	if day == "06" {
+		day06.Run(input)
+	}
+
+	if day == "07" {
+		day07.Run(input)
+	}
+
+	if day == "08" {
+		day08.Run(input)
+	}
+
+	if day == "09" {
+		day09.Run(input)
+	}
+
+	if day == "10" {
+		day10.Run(input)
+	}
+
+	if day == "11" {
+		day11.Run(input)
+	}
+
+	if day == "12" {
+		day12.Run(input)
+	}
+
+	if day == "13" {
+		day13.Run(input)
+	}
+
+	if day == "14" {
+		day14.Run(input)
+	}
+
+	if day == "15" {
+		day15.Run(input)
+	}
 
 	if day == "16" {
 		day16.Run(input)
@@ -125,14 +125,14 @@ func main() {
 		day17.Run(input)
 	}
 
-	// if day == "18" {
-	// 	day18.Run(input)
-	// }
-	//
-	// if day == "19" {
-	// 	day19.Run(input)
-	// }
-	//
+	if day == "18" {
+		day18.Run(input)
+	}
+
+	if day == "19" {
+		day19.Run(input)
+	}
+
 	// if day == "20" {
 	// 	day20.Run(input)
 	// }
