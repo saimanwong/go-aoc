@@ -26,7 +26,7 @@ import (
 	"./problems/day17"
 	"./problems/day18"
 	"./problems/day19"
-	// "./problems/day20"
+	"./problems/day20"
 	// "./problems/day21"
 	// "./problems/day22"
 	// "./problems/day23"
@@ -133,10 +133,10 @@ func main() {
 		day19.Run(input)
 	}
 
-	// if day == "20" {
-	// 	day20.Run(input)
-	// }
-	//
+	if day == "20" {
+		day20.Run(input)
+	}
+
 	// if day == "21" {
 	// 	day21.Run(input)
 	// }
