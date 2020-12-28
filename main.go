@@ -57,103 +57,58 @@ func main() {
 	path := "problems/day" + day + "/inputs/" + inputFile
 	input := f.ReadFile(path)
 
-	if day == "01" {
+	switch day {
+	case "01":
 		day01.Run(input)
-	}
-
-	if day == "02" {
+	case "02":
 		day02.Run(input)
-	}
-
-	if day == "03" {
+	case "03":
 		day03.Run(input)
-	}
-
-	if day == "04" {
+	case "04":
 		day04.Run(input)
-	}
-
-	if day == "05" {
+	case "05":
 		day05.Run(input)
-	}
-
-	if day == "06" {
+	case "06":
 		day06.Run(input)
-	}
-
-	if day == "07" {
+	case "07":
 		day07.Run(input)
-	}
-
-	if day == "08" {
+	case "08":
 		day08.Run(input)
-	}
-
-	if day == "09" {
+	case "09":
 		day09.Run(input)
-	}
-
-	if day == "10" {
+	case "10":
 		day10.Run(input)
-	}
-
-	if day == "11" {
+	case "11":
 		day11.Run(input)
-	}
-
-	if day == "12" {
+	case "12":
 		day12.Run(input)
-	}
-
-	if day == "13" {
+	case "13":
 		day13.Run(input)
-	}
-
-	if day == "14" {
+	case "14":
 		day14.Run(input)
-	}
-
-	if day == "15" {
+	case "15":
 		day15.Run(input)
-	}
-
-	if day == "16" {
+	case "16":
 		day16.Run(input)
-	}
-
-	if day == "17" {
+	case "17":
 		day17.Run(input)
-	}
-
-	if day == "18" {
+	case "18":
 		day18.Run(input)
-	}
-
-	if day == "19" {
+	case "19":
 		day19.Run(input)
-	}
-
-	if day == "20" {
+	case "20":
 		day20.Run(input)
-	}
-
-	// if day == "21" {
+	// case "21":
 	// 	day21.Run(input)
-	// }
-	//
-	// if day == "22" {
+	// case "22":
 	// 	day22.Run(input)
-	// }
-	//
-	// if day == "23" {
+	// case "23":
 	// 	day23.Run(input)
-	// }
-	//
-	// if day == "24" {
+	// case "24":
 	// 	day24.Run(input)
-	// }
-	//
-	// if day == "25" {
+	// case "25":
 	// 	day25.Run(input)
-	// }
+	default:
+		fmt.Printf("%s not implemented yet...\n", day)
+	}
 }
