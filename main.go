@@ -28,7 +28,7 @@ import (
 	"./problems/day19"
 	"./problems/day20"
 	"./problems/day21"
-	// "./problems/day22"
+	"./problems/day22"
 	// "./problems/day23"
 	// "./problems/day24"
 	// "./problems/day25"
@@ -100,8 +100,8 @@ func main() {
 		day20.Run(input)
 	case "21":
 		day21.Run(input)
-	// case "22":
-	// 	day22.Run(input)
+	case "22":
+		day22.Run(input)
 	// case "23":
 	// 	day23.Run(input)
 	// case "24":
