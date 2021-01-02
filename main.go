@@ -31,7 +31,7 @@ import (
 	"./problems/day22"
 	"./problems/day23"
 	"./problems/day24"
-	// "./problems/day25"
+	"./problems/day25"
 )
 
 func main() {
@@ -106,8 +106,8 @@ func main() {
 		day23.Run(input)
 	case "24":
 		day24.Run(input)
-	// case "25":
-	// 	day25.Run(input)
+	case "25":
+		day25.Run(input)
 	default:
 		fmt.Printf("%s not implemented yet...\n", day)
 	}
