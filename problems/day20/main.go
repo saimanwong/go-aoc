@@ -191,7 +191,8 @@ func genAdjMap(dim int) map[int]map[int][]string {
 	return ret
 }
 
-func checkAdj(t1 *tile, t2 *tile, dir string) (*pair, bool) {
+func checkAdj(t1 *tile, t2 *tile) (*pair, bool) {
+	dir := "R"
 	// T2
 	// Rotate Rotate Rotate Rotate
 	for i := 0; i < 4; i++ {
@@ -256,9 +257,6 @@ func checkAdj(t1 *tile, t2 *tile, dir string) (*pair, bool) {
 	return nil, false
 }
 func problemOne(input map[int]*tile) string {
-	dim := int(math.Sqrt(float64(len(input))))
-	adjMap := genAdjMap(dim) // For example, [0][0] = [R B BR]
-
 	memo := map[int][]int{}
 	for _, t1 := range input {
 		for _, t2 := range input {
@@ -271,11 +269,9 @@ func problemOne(input map[int]*tile) string {
 				memo[t1.id] = []int{}
 			}
 
-			for _, dir := range adjMap[dim/2][dim/2] {
-				_, ok := checkAdj(t1, t2, dir)
-				if ok {
-					memo[t1.id] = append(memo[t1.id], t2.id)
-				}
+			_, ok = checkAdj(t1, t2)
+			if ok {
+				memo[t1.id] = append(memo[t1.id], t2.id)
 			}
 		}
 	}
@@ -306,8 +302,88 @@ func problemOne(input map[int]*tile) string {
 }
 
 func problemTwo(input map[int]*tile) string {
-	ret := "To be implemented..."
-	return ret
+	// adjMap := genAdjMap(dim) // For example, [0][0] = [R B BR]
+	dim := int(math.Sqrt(float64(len(input))))
+
+	// Init img
+	img := &image{}
+	for r := 0; r < dim; r++ {
+		*img = append(*img, nil)
+		for c := 0; c < dim; c++ {
+			(*img)[r] = append((*img)[r], nil)
+		}
+	}
+
+	// Solve one row
+	q := []*tile{}
+	for _, t := range input {
+		q = append(q, t)
+	}
+
+	// Pick one random
+	pot := map[int]map[int]int{}
+	for _, t1 := range q {
+		_, ok := pot[t1.id]
+		if !ok {
+			pot[t1.id] = map[int]int{}
+		}
+		for _, t2 := range q {
+			if t1 == t2 {
+				continue
+			}
+
+			_, ok := checkAdj(t1, t2)
+			if ok {
+				_, ok = pot[t1.id][t2.id]
+				if !ok {
+					pot[t1.id][t2.id] = 0
+				}
+				pot[t1.id][t2.id]++
+			}
+		}
+	}
+
+	neigh := map[string]map[int]map[int]bool{}
+	neigh["corner"] = map[int]map[int]bool{}
+	neigh["outer"] = map[int]map[int]bool{}
+	neigh["inner"] = map[int]map[int]bool{}
+	// corner := []int{}
+	// outer := []int{}
+	// inner := []int{}
+	for k, adj := range pot {
+		switch len(adj) {
+		case 2:
+			neigh["corner"][k] = map[int]bool{}
+			for v, _ := range adj {
+				neigh["corner"][k][v] = false
+			}
+		case 3:
+			neigh["outer"][k] = map[int]bool{}
+			for v, _ := range adj {
+				neigh["outer"][k][v] = false
+			}
+		case 4:
+			neigh["inner"][k] = map[int]bool{}
+			for v, _ := range adj {
+				neigh["inner"][k][v] = false
+			}
+		default:
+			panic("something went wrong")
+		}
+	}
+
+	for k, v := range neigh {
+		fmt.Println(k)
+		for t1, adj := range v {
+			fmt.Printf("%d : ", t1)
+			for t2, _ := range adj {
+				fmt.Printf("%d, ", t2)
+			}
+			fmt.Println()
+		}
+	}
+
+	return ""
 }
 
 func Run(input []string) {
