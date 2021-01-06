@@ -1,6 +1,6 @@
 # Advent of Code 2020 in Go
 
-Day 1-15 problems are written in Python for the first time. They will be solved for the second time in Go.
+Day 1-25 solutions for Advent of Code 2020
 
 ## How to run
 
