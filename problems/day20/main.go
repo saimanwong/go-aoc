@@ -5,6 +5,7 @@ import (
 	"math"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 var ADJMAP = map[int]map[int]string{
@@ -20,11 +21,18 @@ var ADJMAP = map[int]map[int]string{
 	},
 }
 
-type helper interface {
+type tileInterface interface {
 	debug()
 	rotate()
 	flip()
 	compare(*tile, string) bool
+	totHashtag() int
+}
+
+type imageInterface interface {
+	debug()
+	fill(int, int, []tile, map[int]bool, *bool)
+	toTile() *tile
 }
 
 type pair struct {
@@ -301,8 +309,187 @@ func problemOne(input map[int]*tile) string {
 	return fmt.Sprintf("%d", ret)
 }
 
+func (t *tile) copyTile() tile {
+	curr := tile{}
+	curr.id = t.id
+	curr.mtx = make([][]rune, len(t.mtx))
+	for i, _ := range curr.mtx {
+		curr.mtx[i] = make([]rune, len(t.mtx[i]))
+		copy(curr.mtx[i], t.mtx[i])
+	}
+
+	return curr
+}
+
+func genAll(tiles map[int]*tile) []tile {
+	ret := []tile{}
+
+	for _, t := range tiles {
+		for i := 0; i < 2; i++ {
+			for j := 0; j < 4; j++ {
+				curr := t.copyTile()
+				ret = append(ret, curr)
+				t.rotate()
+			}
+			t.flip()
+		}
+
+	}
+
+	return ret
+}
+
+func (img *image) debug() {
+	dim := len(*img)
+	for r := 0; r < dim; r++ {
+		for c := 0; c < dim; c++ {
+			if (*img)[r][c] != nil {
+				fmt.Printf("%d ", (*img)[r][c].id)
+			} else {
+				fmt.Printf("nil ")
+			}
+		}
+		fmt.Println()
+	}
+}
+
+func (img *image) fill(r, c int, tiles []tile, visited map[int]bool, found *bool) {
+	// Stop when last
+	if r == len((*img)) {
+		*found = true
+		return
+	}
+
+	for _, t := range tiles {
+		if !visited[t.id] {
+			// Check top
+			if r > 0 {
+				topT := (*img)[r-1][c]
+				if topT == nil {
+					panic("nil top...")
+				}
+				_, ok := t.compare(topT, "T")
+				if !ok {
+					continue
+				}
+			}
+
+			// Check Left
+			if c > 0 {
+				leftT := (*img)[r][c-1]
+				if leftT == nil {
+					panic("nil left...")
+				}
+				_, ok := t.compare(leftT, "L")
+				if !ok {
+					continue
+				}
+			}
+
+			// OK tile
+			(*img)[r][c] = &t
+			visited[t.id] = true
+
+			// Go to next
+			if c < len(*img)-1 {
+				img.fill(r, c+1, tiles, visited, found)
+			} else {
+				img.fill(r+1, 0, tiles, visited, found)
+			}
+
+			if *found {
+				break
+			}
+
+			visited[t.id] = false
+		}
+	}
+}
+
+func (img *image) toTile() *tile {
+	ret := &tile{
+		mtx: [][]rune{},
+		id:  -1,
+	}
+
+	for r := 0; r < len(*img)*len((*img)[0][0].mtx)-(2*len(*img)); r++ {
+		ret.mtx = append(ret.mtx, []rune{})
+
+	}
+
+	for imgR, imgRow := range *img {
+		for _, t := range imgRow {
+			for tR, tRow := range t.mtx {
+				if tR == 0 || tR == len(t.mtx)-1 {
+					continue
+				}
+				for tC, char := range tRow {
+					if tC == 0 || tC == len(tRow)-1 {
+						continue
+					}
+					rowNr := tR - 1 + (imgR * (len(tRow) - 2))
+					ret.mtx[rowNr] = append(ret.mtx[rowNr], char)
+				}
+			}
+		}
+	}
+
+	return ret
+}
+
+func (t *tile) findSeaMonsters(seaMonster []string) int {
+	count := 0
+
+	// Start row1
+	for r := 0; r < len(t.mtx)-2; r++ {
+		for c := 0; c < len(t.mtx[r]); c++ {
+			// First line
+			firstIndex := strings.Index(seaMonster[0], "#")
+			if t.mtx[r][c] == '#' && c >= firstIndex {
+				nextIndex := c - firstIndex
+				if t.mtx[r+1][nextIndex] == '#' && nextIndex+len(seaMonster[1]) < len(t.mtx[r+1]) {
+					line1 := true
+					for idx1, char1 := range seaMonster[1] {
+						if char1 == '#' && t.mtx[r+1][nextIndex+idx1] != '#' {
+							line1 = false
+							break
+						}
+					}
+
+					line2 := true
+					if line1 == true && nextIndex+strings.LastIndex(seaMonster[2], "#") < len(t.mtx[r+2]) {
+						for idx2, char2 := range seaMonster[2] {
+							if char2 == '#' && t.mtx[r+2][nextIndex+idx2] != '#' {
+								line1 = false
+								break
+							}
+						}
+					}
+
+					if line1 && line2 {
+						count++
+					}
+				}
+			}
+		}
+	}
+
+	return count
+}
+
+func (t *tile) totHashtag() int {
+	ret := 0
+	for _, row := range t.mtx {
+		for _, char := range row {
+			if char == '#' {
+				ret++
+			}
+		}
+	}
+	return ret
+}
+
 func problemTwo(input map[int]*tile) string {
-	// adjMap := genAdjMap(dim) // For example, [0][0] = [R B BR]
 	dim := int(math.Sqrt(float64(len(input))))
 
 	// Init img
@@ -314,76 +501,53 @@ func problemTwo(input map[int]*tile) string {
 		}
 	}
 
-	// Solve one row
-	q := []*tile{}
-	for _, t := range input {
-		q = append(q, t)
+	// Generate all possibilities...
+	tiles := genAll(input)
+	visited := map[int]bool{}
+	found := false
+	for id, _ := range input {
+		visited[id] = false
 	}
 
-	// Pick one random
-	pot := map[int]map[int]int{}
-	for _, t1 := range q {
-		_, ok := pot[t1.id]
-		if !ok {
-			pot[t1.id] = map[int]int{}
-		}
-		for _, t2 := range q {
-			if t1 == t2 {
-				continue
-			}
+	img.fill(0, 0, tiles, visited, &found)
+	bigT := img.toTile()
 
-			_, ok := checkAdj(t1, t2)
-			if ok {
-				_, ok = pot[t1.id][t2.id]
-				if !ok {
-					pot[t1.id][t2.id] = 0
-				}
-				pot[t1.id][t2.id]++
-			}
-		}
+	seaMonsterTot := -1
+	seaMonster := []string{
+		"                  # ",
+		"#    ##    ##    ###",
+		" #  #  #  #  #  #   ",
 	}
 
-	neigh := map[string]map[int]map[int]bool{}
-	neigh["corner"] = map[int]map[int]bool{}
-	neigh["outer"] = map[int]map[int]bool{}
-	neigh["inner"] = map[int]map[int]bool{}
-	// corner := []int{}
-	// outer := []int{}
-	// inner := []int{}
-	for k, adj := range pot {
-		switch len(adj) {
-		case 2:
-			neigh["corner"][k] = map[int]bool{}
-			for v, _ := range adj {
-				neigh["corner"][k][v] = false
+	for i := 0; i < 4; i++ {
+		seaMonsters := bigT.findSeaMonsters(seaMonster)
+		if seaMonsters > seaMonsterTot {
+			seaMonsterTot = seaMonsters
+		}
+		bigT.rotate()
+	}
+	bigT.flip()
+	for i := 0; i < 4; i++ {
+		seaMonsters := bigT.findSeaMonsters(seaMonster)
+		if seaMonsters > seaMonsterTot {
+			seaMonsterTot = seaMonsters
+		}
+		bigT.rotate()
+	}
+
+	totHashtag := bigT.totHashtag()
+	seaMonsterHashtag := 0
+	for _, line := range seaMonster {
+		for _, char := range line {
+			if char == '#' {
+				seaMonsterHashtag++
 			}
-		case 3:
-			neigh["outer"][k] = map[int]bool{}
-			for v, _ := range adj {
-				neigh["outer"][k][v] = false
-			}
-		case 4:
-			neigh["inner"][k] = map[int]bool{}
-			for v, _ := range adj {
-				neigh["inner"][k][v] = false
-			}
-		default:
-			panic("something went wrong")
 		}
 	}
 
-	for k, v := range neigh {
-		fmt.Println(k)
-		for t1, adj := range v {
-			fmt.Printf("%d : ", t1)
-			for t2, _ := range adj {
-				fmt.Printf("%d, ", t2)
-			}
-			fmt.Println()
-		}
-	}
+	ret := totHashtag - seaMonsterHashtag*seaMonsterTot
 
-	return ""
+	return fmt.Sprintf("%d", ret)
 }
 
 func Run(input []string) {
