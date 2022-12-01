@@ -1,0 +1,16 @@
+package dayXX
+
+import "fmt"
+
+type Problem struct {
+	input []string
+}
+
+func (p *Problem) SetInput(input []string) {
+	p.input = input
+}
+
+func (p *Problem) Run() {
+	fmt.Println("Part 1:")
+	fmt.Println("Part 2:")
+}
