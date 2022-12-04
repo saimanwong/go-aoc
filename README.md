@@ -1,5 +1,6 @@
 # Advent of Code in Go
 
+- Day 1-4 solutions for Advent of Code 2022
 - Day 1-25 solutions for Advent of Code 2020
 
 ## How to run
