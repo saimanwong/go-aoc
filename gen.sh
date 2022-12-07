@@ -9,6 +9,7 @@ INPUTS_DIR="${DAY_DIR}"/inputs
 
 mkdir -p "${YEAR_DIR}" "${DAY_DIR}" "${INPUTS_DIR}"
 touch "${INPUTS_DIR}"/input
+touch "${INPUTS_DIR}"/example
 
 DAY_FILE="${DAY_DIR}"/day"${DAY}".go
 if [[ ! -f "${DAY_FILE}" ]]; then
