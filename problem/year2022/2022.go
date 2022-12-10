@@ -10,6 +10,7 @@ import (
 	"github.com/saimanwong/go-aoc/problem/year2022/day06"
 	"github.com/saimanwong/go-aoc/problem/year2022/day07"
 	"github.com/saimanwong/go-aoc/problem/year2022/day08"
+	"github.com/saimanwong/go-aoc/problem/year2022/day09"
 )
 
 func GetAllProblems() problem.Problems {
@@ -22,5 +23,6 @@ func GetAllProblems() problem.Problems {
 		"06": &day06.Problem{},
 		"07": &day07.Problem{},
 		"08": &day08.Problem{},
+		"09": &day09.Problem{},
 	}
 }

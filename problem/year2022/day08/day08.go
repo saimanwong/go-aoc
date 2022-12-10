@@ -37,7 +37,7 @@ func (p *Problem) Run() {
 	for r := range p.m {
 		for c := range p.m {
 			score := 1
-			for _, m := range []string{"up", "left", "down", "right"} {
+			for _, m := range []rune{'U', 'L', 'D', 'R'} {
 				n, _ := p.check(m, r, c)
 				score *= n
 			}
@@ -53,7 +53,7 @@ func (p *Problem) visible1(r, c int) bool {
 	if r == 0 || r == len(p.m)-1 || c == 0 || c == len(p.m[0])-1 {
 		return true
 	}
-	for _, m := range []string{"up", "right", "down", "left"} {
+	for _, m := range []rune{'U', 'R', 'D', 'L'} {
 		if _, ok := p.check(m, r, c); ok {
 			return true
 		}
@@ -61,41 +61,16 @@ func (p *Problem) visible1(r, c int) bool {
 	return false
 }
 
-var direction map[string]struct {
-	r int
-	c int
-} = map[string]struct {
-	r int
-	c int
-}{
-	"up": {
-		r: -1,
-		c: 0,
-	},
-	"right": {
-		r: 0,
-		c: 1,
-	},
-	"down": {
-		r: 1,
-		c: 0,
-	},
-	"left": {
-		r: 0,
-		c: -1,
-	},
-}
-
-func (p *Problem) check(dir string, r, c int) (int, bool) {
+func (p *Problem) check(dir rune, r, c int) (int, bool) {
 	curr := p.m[r][c]
-	r, c = r+direction[dir].r, c+direction[dir].c
+	r, c = r+toolbox.Direction[dir].R, c+toolbox.Direction[dir].C
 	count := 0
 	for r >= 0 && c >= 0 && r < len(p.m) && c < len(p.m) {
 		count++
 		if p.m[r][c] >= curr {
 			return count, false
 		}
-		r, c = r+direction[dir].r, c+direction[dir].c
+		r, c = r+toolbox.Direction[dir].R, c+toolbox.Direction[dir].C
 	}
 	return count, true
 }

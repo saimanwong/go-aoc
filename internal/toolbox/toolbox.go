@@ -1,7 +1,10 @@
 // toolbox helper package, most of the funcs panics by design.
 package toolbox
 
-import "strconv"
+import (
+	"math"
+	"strconv"
+)
 
 func ToInt(s string) int {
 	n, err := strconv.Atoi(s)
@@ -33,4 +36,41 @@ func ToFloat64Slice(s ...string) []float64 {
 		ns[i] = ToFloat64(s[i])
 	}
 	return ns
+}
+
+type Coord struct {
+	R int
+	C int
+}
+
+func (c *Coord) Move(m ...rune) {
+	for _, d := range m {
+		c.R += Direction[d].R
+		c.C += Direction[d].C
+	}
+}
+
+func (c *Coord) Distance(y *Coord) float64 {
+	return math.Sqrt(
+		math.Pow(float64(c.R-y.R), 2.0) + math.Pow(float64(c.C-y.C), 2.0),
+	)
+}
+
+var Direction map[rune]Coord = map[rune]Coord{
+	'U': {
+		R: -1,
+		C: 0,
+	},
+	'R': {
+		R: 0,
+		C: 1,
+	},
+	'D': {
+		R: 1,
+		C: 0,
+	},
+	'L': {
+		R: 0,
+		C: -1,
+	},
 }
