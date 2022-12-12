@@ -57,10 +57,9 @@ func main() {
 		os.Exit(1)
 	}
 	path := filepath.Join(
-		"problem",
+		"inputs",
 		fmt.Sprintf("year%s", year),
 		fmt.Sprintf("day%s", day),
-		"inputs",
 		inputFile,
 	)
 	if err := parse(path, prob); err != nil {
