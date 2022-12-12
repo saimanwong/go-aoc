@@ -2,6 +2,7 @@
 package toolbox
 
 import (
+	"fmt"
 	"math"
 	"strconv"
 )
@@ -54,6 +55,10 @@ func (c *Coord) Distance(y *Coord) float64 {
 	return math.Sqrt(
 		math.Pow(float64(c.R-y.R), 2.0) + math.Pow(float64(c.C-y.C), 2.0),
 	)
+}
+
+func (c *Coord) String() string {
+	return fmt.Sprintf("%d,%d", c.R, c.C)
 }
 
 var Direction map[rune]Coord = map[rune]Coord{

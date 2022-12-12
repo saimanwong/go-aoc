@@ -5,7 +5,7 @@ DAY=$2
 
 YEAR_DIR=problem/year"${YEAR}"
 DAY_DIR="${YEAR_DIR}"/day"${DAY}"
-INPUTS_DIR="${DAY_DIR}"/inputs
+INPUTS_DIR=./inputs/year"${YEAR}"/day"${DAY}"
 
 mkdir -p "${YEAR_DIR}" "${DAY_DIR}" "${INPUTS_DIR}"
 touch "${INPUTS_DIR}"/input
