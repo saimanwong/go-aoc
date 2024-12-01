@@ -11,12 +11,14 @@ import (
 	"github.com/saimanwong/go-aoc/problem/year2020"
 	"github.com/saimanwong/go-aoc/problem/year2021"
 	"github.com/saimanwong/go-aoc/problem/year2022"
+	"github.com/saimanwong/go-aoc/problem/year2024"
 )
 
 var problems map[problem.Year]problem.Problems = map[problem.Year]problem.Problems{
 	"2020": year2020.GetAllProblems(),
 	"2021": year2021.GetAllProblems(),
 	"2022": year2022.GetAllProblems(),
+	"2024": year2024.GetAllProblems(),
 }
 
 func main() {
