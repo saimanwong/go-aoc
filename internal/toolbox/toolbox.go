@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"strconv"
+	"strings"
 )
 
 func ToInt(s string) int {
@@ -37,6 +38,34 @@ func ToFloat64Slice(s ...string) []float64 {
 		ns[i] = ToFloat64(s[i])
 	}
 	return ns
+}
+
+type ByteMatrix [][]byte
+
+func ToByteMatrix(lines []string) ByteMatrix {
+	ret := make([][]byte, len(lines))
+	for r := 0; r < len(lines); r++ {
+		ret[r] = make([]byte, len(lines[r]))
+		for c := 0; c < len(lines[r]); c++ {
+			ret[r][c] = lines[r][c]
+		}
+	}
+	return ret
+}
+
+func (b ByteMatrix) Inside(r int, c int) bool {
+	return r >= 0 && r < len(b) && c >= 0 && c < len(b[0])
+}
+
+func (b ByteMatrix) String() string {
+	builder := strings.Builder{}
+	for _, r := range b {
+		for _, c := range r {
+			builder.WriteString(fmt.Sprintf("%s ", string(c)))
+		}
+		builder.WriteString("\n")
+	}
+	return builder.String()
 }
 
 type Coord struct {
