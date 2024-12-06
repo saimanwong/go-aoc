@@ -57,6 +57,31 @@ func (b ByteMatrix) Inside(r int, c int) bool {
 	return r >= 0 && r < len(b) && c >= 0 && c < len(b[0])
 }
 
+func (b ByteMatrix) Count(n byte) int {
+	ret := 0
+	for r := 0; r < len(b); r++ {
+		for c := 0; c < len(b[r]); c++ {
+			if b[r][c] != n {
+				continue
+			}
+			ret++
+		}
+	}
+	return ret
+}
+
+func (b ByteMatrix) Find(n byte) *Coord {
+	for r := 0; r < len(b); r++ {
+		for c := 0; c < len(b[r]); c++ {
+			if b[r][c] != n {
+				continue
+			}
+			return &Coord{R: r, C: c}
+		}
+	}
+	return nil
+}
+
 func (b ByteMatrix) String() string {
 	builder := strings.Builder{}
 	for _, r := range b {
