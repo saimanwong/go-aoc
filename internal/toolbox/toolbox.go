@@ -53,6 +53,17 @@ func ToByteMatrix(lines []string) ByteMatrix {
 	return ret
 }
 
+func (b ByteMatrix) Copy() ByteMatrix {
+	ret := make([][]byte, len(b))
+	for r := 0; r < len(b); r++ {
+		ret[r] = make([]byte, len(b[r]))
+		for c := 0; c < len(b[r]); c++ {
+			ret[r][c] = b[r][c]
+		}
+	}
+	return ret
+}
+
 func (b ByteMatrix) Inside(r int, c int) bool {
 	return r >= 0 && r < len(b) && c >= 0 && c < len(b[0])
 }
@@ -62,6 +73,19 @@ func (b ByteMatrix) Count(n byte) int {
 	for r := 0; r < len(b); r++ {
 		for c := 0; c < len(b[r]); c++ {
 			if b[r][c] != n {
+				continue
+			}
+			ret++
+		}
+	}
+	return ret
+}
+
+func (b ByteMatrix) CountExcept(n byte) int {
+	ret := 0
+	for r := 0; r < len(b); r++ {
+		for c := 0; c < len(b[r]); c++ {
+			if b[r][c] == n {
 				continue
 			}
 			ret++
@@ -93,6 +117,16 @@ func (b ByteMatrix) String() string {
 	return builder.String()
 }
 
+func (b ByteMatrix) Loop(
+	fn func(r int, c int, curr rune),
+) {
+	for r := 0; r < len(b); r++ {
+		for c := 0; c < len(b[r]); c++ {
+			fn(r, c, rune(b[r][c]))
+		}
+	}
+}
+
 type Coord struct {
 	R int
 	C int
@@ -103,6 +137,16 @@ func (c *Coord) Move(m ...rune) {
 		c.R += Direction[d].R
 		c.C += Direction[d].C
 	}
+}
+
+func (c *Coord) Add(y *Coord) {
+	c.R = c.R + y.R
+	c.C = c.C + y.C
+}
+
+func (c *Coord) Subtract(y *Coord) {
+	c.R = c.R - y.R
+	c.C = c.C - y.C
 }
 
 func (c *Coord) Distance(y *Coord) float64 {
