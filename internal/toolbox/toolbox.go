@@ -106,6 +106,23 @@ func (b ByteMatrix) Find(n byte) *Coord {
 	return nil
 }
 
+func (b ByteMatrix) FindMany(n byte) []*Coord {
+	ret := []*Coord{}
+	for r := 0; r < len(b); r++ {
+		for c := 0; c < len(b[r]); c++ {
+			if b[r][c] != n {
+				continue
+			}
+			ret = append(ret, &Coord{R: r, C: c})
+		}
+	}
+	return ret
+}
+
+func (b ByteMatrix) GetVal(c *Coord) byte {
+	return b[c.R][c.C]
+}
+
 func (b ByteMatrix) String() string {
 	builder := strings.Builder{}
 	for _, r := range b {
