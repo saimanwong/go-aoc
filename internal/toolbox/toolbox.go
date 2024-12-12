@@ -53,6 +53,17 @@ func ToByteMatrix(lines []string) ByteMatrix {
 	return ret
 }
 
+func (b ByteMatrix) Equal(bb ByteMatrix) bool {
+	ret := true
+	b.Loop(func(r, c int, curr rune) {
+		if curr != rune(bb[r][c]) {
+			ret = false
+			return
+		}
+	})
+	return ret
+}
+
 func (b ByteMatrix) Copy() ByteMatrix {
 	ret := make([][]byte, len(b))
 	for r := 0; r < len(b); r++ {
@@ -190,6 +201,25 @@ var Direction map[rune]Coord = map[rune]Coord{
 		C: 0,
 	},
 	'L': {
+		R: 0,
+		C: -1,
+	},
+}
+
+var DirectionSlice []Coord = []Coord{
+	{
+		R: -1,
+		C: 0,
+	},
+	{
+		R: 0,
+		C: 1,
+	},
+	{
+		R: 1,
+		C: 0,
+	},
+	{
 		R: 0,
 		C: -1,
 	},
