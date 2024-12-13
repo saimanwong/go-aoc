@@ -1,3 +1,3 @@
 module github.com/saimanwong/go-aoc
 
-go 1.19
+go 1.21
