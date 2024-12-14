@@ -53,6 +53,17 @@ func ToByteMatrix(lines []string) ByteMatrix {
 	return ret
 }
 
+func NewByteMatrix(height, width int, fill byte) ByteMatrix {
+	ret := make([][]byte, height)
+	for r := 0; r < height; r++ {
+		ret[r] = make([]byte, width)
+		for c := 0; c < width; c++ {
+			ret[r][c] = fill
+		}
+	}
+	return ret
+}
+
 func (b ByteMatrix) Equal(bb ByteMatrix) bool {
 	ret := true
 	b.Loop(func(r, c int, curr rune) {
@@ -77,6 +88,18 @@ func (b ByteMatrix) Copy() ByteMatrix {
 
 func (b ByteMatrix) Inside(r int, c int) bool {
 	return r >= 0 && r < len(b) && c >= 0 && c < len(b[0])
+}
+
+func (b ByteMatrix) InsideCoord(coord *Coord) bool {
+	return coord.R >= 0 && coord.R < len(b) && coord.C >= 0 && coord.C < len(b[0])
+}
+
+func (b ByteMatrix) Width() int {
+	return len(b[0])
+}
+
+func (b ByteMatrix) Height() int {
+	return len(b)
 }
 
 func (b ByteMatrix) Count(n byte) int {
