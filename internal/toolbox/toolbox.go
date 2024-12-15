@@ -157,6 +157,10 @@ func (b ByteMatrix) GetVal(c *Coord) byte {
 	return b[c.R][c.C]
 }
 
+func (b ByteMatrix) SetVal(c *Coord, val byte) {
+	b[c.R][c.C] = val
+}
+
 func (b ByteMatrix) String() string {
 	builder := strings.Builder{}
 	for _, r := range b {
@@ -188,6 +192,10 @@ func (c *Coord) Move(m ...rune) {
 		c.R += Direction[d].R
 		c.C += Direction[d].C
 	}
+}
+
+func (c *Coord) Copy() *Coord {
+	return &Coord{R: c.R, C: c.C}
 }
 
 func (c *Coord) Add(y *Coord) {
