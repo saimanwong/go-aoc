@@ -182,6 +182,17 @@ func (b ByteMatrix) Loop(
 	}
 }
 
+func (b ByteMatrix) LoopCoord(
+	fn func(c *Coord, curr rune),
+) {
+	for r := 0; r < len(b); r++ {
+		for c := 0; c < len(b[r]); c++ {
+			coord := &Coord{R: r, C: c}
+			fn(coord, rune(b[r][c]))
+		}
+	}
+}
+
 type Coord struct {
 	R int
 	C int
